@@ -1,0 +1,3 @@
+[submodule "ofxparse"]
+	path = ofxparse
+	url = https://github.com/jseutter/ofxparse
