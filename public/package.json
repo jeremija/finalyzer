@@ -1,19 +1,25 @@
 {
   "scripts": {
-    "compile": "browserify -t babelify ./src/components/App.jsx -o ./src/js-gen/app.js"
+    "compile": "browserify -t babelify ./src/components/App.jsx -o ./src/generated/app.js",
+    "less": "lessc ./node_modules/bootstrap/less/bootstrap.less ./src/generated/app.css"
   },
   "dependencies": {
     "babel": "^6.5.2",
     "babel-preset-es2016": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babelify": "^7.3.0",
+    "bootstrap": "^3.3.7",
     "browserify": "^13.1.0",
     "eslint": "^3.8.1",
     "eslint-plugin-react": "^6.4.1",
+    "immutable": "^3.8.1",
+    "less": "^2.7.1",
     "react": "^15.3.2",
+    "react-bootstrap": "^0.30.5",
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
     "react-select": "^1.0.0-rc.2",
+    "redux": "^3.6.0",
     "watchify": "^3.7.0"
   },
   "devDependencies": {

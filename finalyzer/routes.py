@@ -60,4 +60,9 @@ def home():
 
 @app.route('/app.js')
 def app_js():
-    return app.send_static_file('src/js-gen/app.js')
+    return app.send_static_file('src/generated/app.js')
+
+
+@app.route('/app.css')
+def app_css():
+    return app.send_static_file('src/generated/app.css')

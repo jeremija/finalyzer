@@ -135,3 +135,4 @@ jspm_packages
 *.pidb
 *.resources
 test-results/
+generated/
