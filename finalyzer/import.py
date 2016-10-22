@@ -1,5 +1,5 @@
 from ofxparse.ofxparse import OfxParser
-from .app import db
+from .db import db
 from .service import import_ofx
 import sys
 

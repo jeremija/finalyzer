@@ -1,11 +1,13 @@
-import pytest
-from .app import db, Account, Payee, Transaction
 from . import service
+from .db import db, Account, Payee, Transaction
 from datetime import datetime, timedelta
+from unittest.mock import MagicMock
+import pytest
 
 
 @pytest.yield_fixture(autouse=True)
-def run_around_tests():
+def rollback():
+    db.session.commit = MagicMock()
     # wait for test method to be run
     yield
     db.session.rollback()

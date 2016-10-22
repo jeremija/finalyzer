@@ -1,4 +1,9 @@
-from .app import db, log, Account, Payee, Transaction, Tag
+from .app import log
+from .db import db, Account, Payee, Transaction, Tag
+
+
+def find_accounts():
+    return Account.query.all()
 
 
 def find_or_create_account(account_number):
@@ -35,6 +40,13 @@ def find_transaction(transaction_id):
     return transaction
 
 
+def find_transactions(account_id, page=1, per_page=50):
+    return Transaction.query \
+        .filter(Transaction.account_id == account_id) \
+        .paginate(page=page, per_page=per_page) \
+        .items
+
+
 def create_transaction(transaction):
     log.debug('creating transaction: %s', transaction)
     db.session.add(transaction)
@@ -61,6 +73,7 @@ def tag_payee(tag_name, payee_id):
     db.session.flush()
     Payee.query.filter(Payee.id == payee_id) \
         .update(dict(tag_id=tag.id))
+    db.session.commit()
 
 
 def untag_payee(payee_id):
@@ -70,6 +83,7 @@ def untag_payee(payee_id):
 
 
 def fetch_amounts_per_tag(account_id, start_date, end_date):
+    print(account_id, start_date, end_date)
     amounts = db.session.query(
         db.func.sum(Transaction.amount).label('amount'),
         Tag.name,
@@ -80,8 +94,8 @@ def fetch_amounts_per_tag(account_id, start_date, end_date):
             Transaction.date < end_date) \
         .join(Transaction.account) \
         .join(Transaction.payee) \
-        .join(Payee.tag) \
-        .group_by(Tag.name, Transaction.type) \
+        .outerjoin(Payee.tag) \
+        .group_by(Transaction.type) \
         .all()
     return [a._asdict() for a in amounts]
 
