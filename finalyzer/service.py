@@ -69,6 +69,23 @@ def untag_payee(payee_id):
         .update(dict(tag_id=None))
 
 
+def fetch_amounts_per_tag(account_id, start_date, end_date):
+    amounts = db.session.query(
+        db.func.sum(Transaction.amount).label('amount'),
+        Tag.name,
+        Transaction.type) \
+        .filter(
+            Account.id == account_id,
+            Transaction.date >= start_date,
+            Transaction.date < end_date) \
+        .join(Transaction.account) \
+        .join(Transaction.payee) \
+        .join(Payee.tag) \
+        .group_by(Tag.name, Transaction.type) \
+        .all()
+    return [a._asdict() for a in amounts]
+
+
 def import_ofx(ofx):
     account_number = ofx.account.number[:-4]
     acc = find_or_create_account(account_number)

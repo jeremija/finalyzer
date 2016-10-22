@@ -1,7 +1,7 @@
 import pytest
 from .app import db, Account, Payee, Transaction
 from . import service
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @pytest.yield_fixture(autouse=True)
@@ -56,18 +56,16 @@ def test_find_transaction():
     assert t is None
 
 
-def _create_transaction():
-    acc = Account(account_number, account_number)
-    db.session.add(acc)
-    payee = Payee(payee_name)
-    db.session.add(payee)
+def _create_transaction(id=transaction_id, amount=500, type='credit'):
+    acc = service.find_or_create_account(account_number)
+    payee = service.find_or_create_payee(payee_name)
     transaction = Transaction(
-        id=transaction_id,
+        id,
         account=acc,
         payee=payee,
-        amount=500,
+        amount=amount,
         date=datetime.now(),
-        type='credit')
+        type=type)
     service.create_transaction(transaction)
     db.session.flush()
     return transaction
@@ -102,3 +100,17 @@ def test_untag_payee():
     payee = service.find_payee(payee_name)
     assert payee is not None
     assert payee.tag_id is None
+
+
+def test_fetch_amounts_per_tag():
+    t1 = _create_transaction(500)
+    _create_transaction(id='test-transaction-2', amount=600)
+    _create_transaction(id='test-transaction-3', amount=700)
+    service.tag_payee(tag_name, t1.payee.id)
+    db.session.flush()
+
+    start_date = datetime.now() - timedelta(days=1)
+    end_date = datetime.now() + timedelta(days=1)
+    a = service.fetch_amounts_per_tag(account_number, start_date, end_date)
+    assert len(a) == 1
+    assert a[0] == {'amount': 1800, 'name': 'test-tag', 'type': 'credit'}
