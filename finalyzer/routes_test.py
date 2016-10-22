@@ -26,7 +26,7 @@ def rollback():
 def test_accounts():
     service.find_or_create_account(acc_name)
     service.find_or_create_account(acc_name + '2')
-    response = app.get('/accounts')
+    response = app.get('/api/accounts')
     data = loads(response.data.decode('utf-8'))
     assert len(data) >= 2
     account_names = set(acc['name'] for acc in data)
@@ -45,6 +45,6 @@ def transactions(account_id, page):
         date=datetime.now(),
         type='debit')
     service.create_transaction(transaction)
-    response = app.get('/account/{}/transactions/1'.format(acc.id))
+    response = app.get('/api/account/{}/transactions/1'.format(acc.id))
     data = loads(response.data.decode('utf-8'))
     assert len(data) == 1

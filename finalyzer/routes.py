@@ -4,6 +4,7 @@ from . import service
 from datetime import datetime
 import collections
 import flask
+from os import path
 
 
 def serialize(result):
@@ -22,19 +23,19 @@ def json(f):
     return wrapper
 
 
-@app.route('/accounts')
+@app.route('/api/accounts')
 @json
 def accounts():
     return service.find_accounts()
 
 
-@app.route('/account/<account_id>/transactions/<int:page>')
+@app.route('/api/account/<account_id>/transactions/<int:page>')
 @json
 def transactions(account_id, page):
     return service.find_transactions(account_id, page=page)
 
 
-@app.route('/account/<account_id>/tagged/<start_date>/<end_date>')
+@app.route('/api/account/<account_id>/tagged/<start_date>/<end_date>')
 @json
 def aggregate(account_id, start_date, end_date):
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
@@ -42,6 +43,21 @@ def aggregate(account_id, start_date, end_date):
     return service.fetch_amounts_per_tag(account_id, start_date, end_date)
 
 
-@app.route('/payee/<int:payee_id>/tag/<tag_name>', methods=['POST'])
+@app.route('/api/payee/<int:payee_id>/tag/<tag_name>', methods=['POST'])
 def tag_payee(payee_id, tag_name):
     service.tag_payee(payee_id, tag_name)
+
+
+@app.route('/')
+def home_redirect():
+    return flask.redirect(flask.url_for('home'))
+
+
+@app.route('/home')
+def home():
+    return app.send_static_file('src/views/index.html')
+
+
+@app.route('/app.js')
+def app_js():
+    return app.send_static_file('src/js-gen/app.js')

@@ -1,0 +1,23 @@
+{
+  "scripts": {
+    "compile": "browserify -t babelify ./src/components/App.jsx -o ./src/js-gen/app.js"
+  },
+  "dependencies": {
+    "babel": "^6.5.2",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.0",
+    "eslint": "^3.8.1",
+    "eslint-plugin-react": "^6.4.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-router": "^2.8.1",
+    "react-select": "^1.0.0-rc.2",
+    "watchify": "^3.7.0"
+  },
+  "devDependencies": {
+    "jest-cli": "^16.0.2",
+    "react-addons-test-utils": "^15.3.2"
+  }
+}
