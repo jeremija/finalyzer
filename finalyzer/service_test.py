@@ -14,6 +14,7 @@ def run_around_tests():
 account_number = 'test-account'
 payee_name = 'test-payee'
 transaction_id = 'test-transaction'
+tag_name = 'test-tag'
 
 
 def test_find_or_create_account():
@@ -55,7 +56,7 @@ def test_find_transaction():
     assert t is None
 
 
-def test_find_transaction2():
+def _create_transaction():
     acc = Account(account_number, account_number)
     db.session.add(acc)
     payee = Payee(payee_name)
@@ -68,7 +69,36 @@ def test_find_transaction2():
         date=datetime.now(),
         type='credit')
     service.create_transaction(transaction)
-    t = service.find_transaction(transaction.id)
     db.session.flush()
+    return transaction
+
+
+def test_find_transaction2():
+    transaction = _create_transaction()
+    t = service.find_transaction(transaction.id)
     assert t is not None
     assert t.id == transaction.id
+
+
+def test_tag_payeee():
+    payee = Payee(payee_name)
+    db.session.add(payee)
+    db.session.flush()
+    service.tag_payee(tag_name, payee.id)
+    tag = service.find_tag(tag_name)
+    assert tag is not None
+    assert tag.id is not None
+    payee = service.find_payee(payee_name)
+    assert payee is not None
+    assert payee.tag_id == tag.id
+
+
+def test_untag_payee():
+    payee = Payee(payee_name)
+    db.session.add(payee)
+    db.session.flush()
+    service.tag_payee(tag_name, payee.id)
+    service.untag_payee(payee.id)
+    payee = service.find_payee(payee_name)
+    assert payee is not None
+    assert payee.tag_id is None

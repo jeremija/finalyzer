@@ -1,4 +1,4 @@
-from .app import db, log, Account, Payee, Transaction
+from .app import db, log, Account, Payee, Transaction, Tag
 
 
 def find_or_create_account(account_number):
@@ -12,11 +12,16 @@ def find_or_create_account(account_number):
     return acc
 
 
-def find_or_create_payee(payee_name):
+def find_payee(payee_name):
     payees = Payee.query.filter(Payee.name == payee_name).limit(1).all()
-    if payees:
-        log.debug('found payee: %s', payees[0])
-        return payees[0]
+    return payees and payees[0]
+
+
+def find_or_create_payee(payee_name):
+    payee = find_payee(payee_name)
+    if payee:
+        log.debug('found payee: %s', payee)
+        return payee
     payee = Payee(payee_name)
     log.debug('creating payee: %s', payee)
     db.session.add(payee)
@@ -35,11 +40,39 @@ def create_transaction(transaction):
     db.session.add(transaction)
 
 
+def find_tag(tag_name):
+    tags = Tag.query.filter(Tag.name == tag_name).limit(1).all()
+    return tags and tags[0]
+
+
+def find_or_create_tag(tag_name):
+    tag = find_tag(tag_name)
+    if tag:
+        log.debug('Found tag: %s', tag)
+        return tag
+    tag = Tag(tag_name)
+    db.session.add(tag)
+    return tag
+
+
+def tag_payee(tag_name, payee_id):
+    tag = find_or_create_tag(tag_name)
+    log.debug('tagging payee_id: %s with tag: %s', payee_id, tag)
+    db.session.flush()
+    Payee.query.filter(Payee.id == payee_id) \
+        .update(dict(tag_id=tag.id))
+
+
+def untag_payee(payee_id):
+    log.debug('untagging payee_id: %s', payee_id)
+    Payee.query.filter(Payee.id == payee_id) \
+        .update(dict(tag_id=None))
+
+
 def import_ofx(ofx):
     account_number = ofx.account.number[:-4]
     acc = find_or_create_account(account_number)
 
-    # print(dir(ofx.account.statement.transactions[0]))
     for t in ofx.account.statement.transactions:
         payee = find_or_create_payee(t.payee)
         transaction = find_transaction(t.id)
