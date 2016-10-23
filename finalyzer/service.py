@@ -73,6 +73,10 @@ def find_tag(tag_name):
     return Tag.query.filter(Tag.name == tag_name).first()
 
 
+def search_tags(tag_name):
+    return Tag.query.filter(Tag.name.like('%{}%'.format(tag_name))).limit(10)
+
+
 def find_or_create_tag(tag_name):
     tag = find_tag(tag_name)
     if tag:
@@ -110,8 +114,7 @@ def untag_payee(payee_id):
 def fetch_amounts_per_tag(account_id, start_date, end_date):
     amounts = db.session.query(
         db.func.sum(Transaction.amount).label('amount'),
-        Tag.name,
-        Transaction.type) \
+        Tag.name) \
         .filter(
             Account.id == account_id,
             Transaction.date >= start_date,
@@ -119,7 +122,8 @@ def fetch_amounts_per_tag(account_id, start_date, end_date):
         .join(Transaction.account) \
         .join(Transaction.payee) \
         .outerjoin(Payee.tag) \
-        .group_by(Transaction.type) \
+        .group_by(Tag.name) \
+        .order_by('amount') \
         .all()
     return [a._asdict() for a in amounts]
 

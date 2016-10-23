@@ -43,6 +43,12 @@ def aggregate(account_id, start_date, end_date):
     return service.fetch_amounts_per_tag(account_id, start_date, end_date)
 
 
+@app.route('/api/tag/search/<search>')
+@json
+def search_tags(search):
+    return service.search_tags(search)
+
+
 @app.route('/api/payee/<int:payee_id>/tag/<tag_name>', methods=['POST'])
 @json
 def tag_payee(payee_id, tag_name):

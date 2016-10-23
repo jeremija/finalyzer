@@ -8,8 +8,6 @@ const { connect } = require('react-redux');
 const Transactions = React.createClass({
   propTypes: {
     hasMore: React.PropTypes.bool.isRequired,
-    loadMore: React.PropTypes.func.isRequired,
-    onSetTag: React.PropTypes.func.isRequired,
     payeesById: React.PropTypes.object,
     transactions: React.PropTypes.arrayOf(React.PropTypes.object).isRequired
   },

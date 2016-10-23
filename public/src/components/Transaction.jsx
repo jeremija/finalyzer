@@ -6,6 +6,7 @@ const {
 } = require('react-bootstrap');
 const PureRenderMixin = require('react-addons-pure-render-mixin');
 const React = require('react');
+const moment = require('moment');
 
 const Transaction = React.createClass({
   propTypes: {
@@ -36,10 +37,11 @@ const Transaction = React.createClass({
     const { isEdit } = this.state;
     const { transaction, payee } = this.props;
     const tagName = payee.tag && payee.tag.name;
+    const date = moment(transaction.date).format('YYYY-MM-DD');
 
     let label = <Label>{tagName}</Label>;
     let editButton = (
-      <Button bsSize="xsmall" onClick={this.handleEdit}>Edit tag</Button>
+      <Button bsSize="xsmall" onClick={this.handleEdit}>Tag</Button>
     );
     if (isEdit) {
       label = (
@@ -56,6 +58,7 @@ const Transaction = React.createClass({
 
     return (
       <ListGroupItem>
+        {date}&nbsp;
         {editButton}&nbsp;
         {label}&nbsp;
         {payee.name}&nbsp;

@@ -1,5 +1,6 @@
 const AccountPicker = require('../components/AccountPicker.jsx');
 const Col = require('react-bootstrap').Col;
+const Chart = require('./Chart.jsx');
 const PureRenderMixin = require('react-addons-pure-render-mixin');
 const React = require('react');
 const Transactions = require('../components/Transactions.jsx');
@@ -45,6 +46,7 @@ const Account = React.createClass({
           isLoading={accounts.isLoading}
           onChange={this.handleChangeAccount}
         />
+        <Chart />
         <Transactions
           payeesById={transactions.payeesById}
           transactions={transactions.data}

@@ -38,7 +38,7 @@ export const transactions = (state = defaultState, action) => {
       return Immutable({
         ...state,
         isLoading: false,
-        data: action.payload,
+        data: [...state.data, ...action.payload],
         payeesById: {...state.payeesById, ...newPayeesById}
       });
     case constants.TRANSACTIONS_INVALIDATE:

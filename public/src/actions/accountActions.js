@@ -12,11 +12,12 @@ export const selectAccount = account => {
   };
 };
 
-export const fetchAccounts = () => dispatch => {
+export const fetchAccounts = () => (dispatch, getState) => {
   notify(dispatch, constants.ACCOUNTS_REQUEST)();
   return http.get('/api/accounts')
   .then(notify(dispatch, constants.ACCOUNTS_RECEIVE))
-  .catch(notify(dispatch, constants.ACCOUNTS_INVALIDATE));
+  .catch(notify(dispatch, constants.ACCOUNTS_INVALIDATE))
+  .then(() => fetchTransactionsByTags()(dispatch, getState));
 };
 
 export const fetchTransactions = () => (dispatch, getState) => {
@@ -35,27 +36,31 @@ export const tagOrUntagPayee = (payee, tagName) => {
   return untagPayee(payee);
 };
 
-export const tagPayee = (payee, tagName) => dispatch => {
+export const tagPayee = (payee, tagName) => (dispatch, getState) => {
   tagName = encodeURIComponent(tagName);
   notify(dispatch, constants.TAG_PAYEE_REQUEST)();
   return http.post('/api/payee/' + payee.id + '/tag/' + tagName)
   .then(notify(dispatch, constants.TAG_PAYEE_RECEIVE))
-  .catch(notify(dispatch, constants.TAG_PAYEE_INVALIDATE));
+  .catch(notify(dispatch, constants.TAG_PAYEE_INVALIDATE))
+  .then(() => fetchTransactionsByTags()(dispatch, getState));
 };
 
-export const untagPayee = payee => dispatch => {
+export const untagPayee = payee => (dispatch, getState) => {
   notify(dispatch, constants.UNTAG_PAYEE_REQUEST)();
   return http.delete('/api/payee/' + payee.id)
   .then(notify(dispatch, constants.UNTAG_PAYEE_RECEIVE))
-  .catch(notify(dispatch, constants.UNTAG_PAYEE_INVALIDATE));
+  .catch(notify(dispatch, constants.UNTAG_PAYEE_INVALIDATE))
+  .then(() => fetchTransactionsByTags(dispatch, getState));
 };
 
-export const fetchTransactionsByTags = (date1, date2) => (d, getState) => {
+export const fetchTransactionsByTags = () => (dispatch, getState) => {
+  const { startDate, endDate } = getState().aggregate;
   const account = getState().account;
   if (!account) return;
-  notify(d, constants.TRANSACTIONS_BY_TAGS_REQUEST)();
-  const url = '/api/account/' + account.id + '/tagged/' + date1 + '/' + date2;
+  notify(dispatch, constants.TRANSACTIONS_BY_TAGS_REQUEST)();
+  const dates = startDate + '/' + endDate;
+  const url = '/api/account/' + account.id + '/tagged/' + dates;
   return http.get(url)
-  .then(notify(d, constants.TRANSACTIONS_BY_TAGS_RECEIVE))
-  .catch(notify(d, constants.TRANSACTIONS_BY_TAGS_INVALIDATE));
+  .then(notify(dispatch, constants.TRANSACTIONS_BY_TAGS_RECEIVE))
+  .catch(notify(dispatch, constants.TRANSACTIONS_BY_TAGS_INVALIDATE));
 };
