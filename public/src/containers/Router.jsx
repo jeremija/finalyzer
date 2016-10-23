@@ -1,7 +1,7 @@
 const React = require('react');
 const { Router, Route, IndexRoute } = require('react-router');
 const Layout = require('./Layout.jsx');
-const Transactions = require('./Transactions.jsx');
+const Account = require('./Account.jsx');
 
 const Routes = React.createClass({
   render() {
@@ -9,7 +9,7 @@ const Routes = React.createClass({
     return (
       <Router history={history}>
         <Route component={Layout} path="/app">
-          <IndexRoute component={Transactions} />
+          <IndexRoute component={Account} />
         </Route>
       </Router>
     );

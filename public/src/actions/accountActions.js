@@ -19,13 +19,20 @@ export const fetchAccounts = () => dispatch => {
   .catch(notify(dispatch, constants.ACCOUNTS_INVALIDATE));
 };
 
-export const fetchTransactions = page => (dispatch, getState) => {
+export const fetchTransactions = () => (dispatch, getState) => {
   const account = getState().account;
   if (!account) return;
   notify(dispatch, constants.TRANSACTIONS_REQUEST)();
+  const page = getState().transactions.page;
+  console.log('page', page);
   return http.get('/api/account/' + account.id + '/transactions/' + page)
   .then(notify(dispatch, constants.TRANSACTIONS_RECEIVE))
   .catch(notify(dispatch, constants.TRANSACTIONS_INVALIDATE));
+};
+
+export const tagOrUntagPayee = (payee, tagName) => {
+  if (tagName) return tagPayee(payee, tagName);
+  return untagPayee(payee);
 };
 
 export const tagPayee = (payee, tagName) => dispatch => {

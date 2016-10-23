@@ -44,13 +44,15 @@ def aggregate(account_id, start_date, end_date):
 
 
 @app.route('/api/payee/<int:payee_id>/tag/<tag_name>', methods=['POST'])
+@json
 def tag_payee(payee_id, tag_name):
-    service.tag_payee(payee_id, tag_name)
+    return service.tag_payee(payee_id, tag_name)
 
 
 @app.route('/api/payee/<int:payee_id>', methods=['DELETE'])
+@json
 def untag_payee(payee_id, tag_name):
-    service.untag_payee(payee_id)
+    return service.untag_payee(payee_id)
 
 
 @app.route('/')

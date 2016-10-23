@@ -21,23 +21,24 @@ const initialAccountsState = {
 export const accounts = (state = initialAccountsState, action) => {
   switch (action.type) {
     case constants.ACCOUNTS_REQUEST:
-      return {
+      return Immutable({
         isLoading: true,
         ...state
-      };
+      });
     case constants.ACCOUNTS_RECEIVE:
-      return {
+      return Immutable({
+        ...state,
         isLoading: false,
         isInvalidated: false,
-        data: Immutable(action.payload)
-      };
+        data: action.payload
+      });
     case constants.ACCOUNTS_INVALIDATE:
-      return {
+      return Immutable({
+        ...state,
         isLoading: false,
-        isInvalidated: true,
-        ...state
-      };
+        isInvalidated: true
+      });
     default:
-      return state;
+      return Immutable(state);
   }
 };

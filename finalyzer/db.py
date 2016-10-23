@@ -52,7 +52,8 @@ class Payee(db.Model):
     @property
     def serialize(self):
         payee = serialize(self, ('id', 'name', 'tag_id'))
-        payee['tag'] = payee.tag and payee.tag.serialize
+        payee['tag'] = self.tag and self.tag.serialize
+        return payee
 
 
 class Transaction(db.Model):
