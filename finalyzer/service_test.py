@@ -84,11 +84,11 @@ def test_tag_payeee():
     payee = Payee(payee_name)
     db.session.add(payee)
     db.session.flush()
-    service.tag_payee(tag_name, payee.id)
+    service.tag_payee(payee.id, tag_name)
     tag = service.find_tag(tag_name)
     assert tag is not None
     assert tag.id is not None
-    payee = service.find_payee(payee_name)
+    payee = service.find_payee_by_name(payee_name)
     assert payee is not None
     assert payee.tag_id == tag.id
 
@@ -99,7 +99,7 @@ def test_untag_payee():
     db.session.flush()
     service.tag_payee(tag_name, payee.id)
     service.untag_payee(payee.id)
-    payee = service.find_payee(payee_name)
+    payee = service.find_payee_by_name(payee_name)
     assert payee is not None
     assert payee.tag_id is None
 
@@ -108,11 +108,11 @@ def test_fetch_amounts_per_tag():
     t1 = _create_transaction(500)
     _create_transaction(id='test-transaction-2', amount=600)
     _create_transaction(id='test-transaction-3', amount=700)
-    service.tag_payee(tag_name, t1.payee.id)
+    service.tag_payee(t1.payee.id, tag_name)
     db.session.flush()
 
     start_date = datetime.now() - timedelta(days=1)
     end_date = datetime.now() + timedelta(days=1)
     a = service.fetch_amounts_per_tag(account_number, start_date, end_date)
     assert len(a) == 1
-    assert a[0] == {'amount': 1800, 'name': 'test-tag', 'type': 'credit'}
+    assert a[0] == {'amount': 1800, 'name': 'test-tag'}
