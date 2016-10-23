@@ -51,7 +51,8 @@ class Payee(db.Model):
 
     @property
     def serialize(self):
-        return serialize(self, ('id', 'name', 'tag_id'))
+        payee = serialize(self, ('id', 'name', 'tag_id'))
+        payee['tag'] = payee.tag and payee.tag.serialize
 
 
 class Transaction(db.Model):
@@ -84,9 +85,12 @@ class Transaction(db.Model):
 
     @property
     def serialize(self):
-        return serialize(
+        t = serialize(
             self,
             ('id', 'amount', 'account_id', 'payee_id', 'date', 'type'))
+
+        t['payee'] = self.payee and self.payee.serialize
+        return t
 
 
 class Tag(db.Model):

@@ -18,8 +18,8 @@ def find_or_create_account(account_number):
 
 
 def find_payee(payee_name):
-    payees = Payee.query.filter(Payee.name == payee_name).limit(1).all()
-    return payees and payees[0]
+    payee = Payee.query.filter(Payee.name == payee_name).first()
+    return payee
 
 
 def find_or_create_payee(payee_name):
@@ -34,7 +34,11 @@ def find_or_create_payee(payee_name):
 
 
 def find_transaction(transaction_id):
-    transaction = Transaction.query.get(transaction_id)
+    transaction = Transaction.query \
+        .filter(Transaction.id == transaction_id) \
+        .join(Transaction.payee) \
+        .outerjoin(Payee.tag) \
+        .first()
     if transaction:
         log.debug('found transaction: %s', transaction)
     return transaction
@@ -43,6 +47,8 @@ def find_transaction(transaction_id):
 def find_transactions(account_id, page=1, per_page=50):
     return Transaction.query \
         .filter(Transaction.account_id == account_id) \
+        .join(Transaction.payee) \
+        .outerjoin(Payee.tag) \
         .paginate(page=page, per_page=per_page) \
         .items
 
@@ -53,8 +59,7 @@ def create_transaction(transaction):
 
 
 def find_tag(tag_name):
-    tags = Tag.query.filter(Tag.name == tag_name).limit(1).all()
-    return tags and tags[0]
+    return Tag.query.filter(Tag.name == tag_name).first()
 
 
 def find_or_create_tag(tag_name):

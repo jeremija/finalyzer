@@ -48,6 +48,11 @@ def tag_payee(payee_id, tag_name):
     service.tag_payee(payee_id, tag_name)
 
 
+@app.route('/api/payee/<int:payee_id>', methods=['DELETE'])
+def untag_payee(payee_id, tag_name):
+    service.untag_payee(payee_id)
+
+
 @app.route('/')
 def home_redirect():
     return flask.redirect(flask.url_for('send_index'))
