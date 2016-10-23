@@ -1,10 +1,12 @@
 {
   "scripts": {
-    "compile": "browserify -t babelify ./src/components/App.jsx -o ./src/generated/app.js",
+    "compile": "browserify -d -t babelify ./src/index.js -o ./src/generated/app.js",
+    "watchify": "watchify -d -t babelify ./src/index.js -o ./src/generated/app.js",
     "less": "lessc ./node_modules/bootstrap/less/bootstrap.less ./src/generated/app.css"
   },
   "dependencies": {
     "babel": "^6.5.2",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-preset-es2016": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babelify": "^7.3.0",
@@ -20,6 +22,7 @@
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
+    "react-router-redux": "^4.0.6",
     "react-select": "^1.0.0-rc.2",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.0",

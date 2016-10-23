@@ -2,9 +2,9 @@ from .app import app
 from functools import wraps
 from . import service
 from datetime import datetime
+from os import path
 import collections
 import flask
-from os import path
 
 
 def serialize(result):
@@ -50,19 +50,21 @@ def tag_payee(payee_id, tag_name):
 
 @app.route('/')
 def home_redirect():
-    return flask.redirect(flask.url_for('home'))
+    return flask.redirect(flask.url_for('send_index'))
 
 
-@app.route('/home')
-def home():
-    return app.send_static_file('src/views/index.html')
+@app.route('/app/')
+def send_index():
+    file = path.join(path.dirname(__file__), '../public/src/views/index.html')
+    return flask.send_file(file)
 
 
-@app.route('/app.js')
-def app_js():
-    return app.send_static_file('src/generated/app.js')
+@app.route('/app/<path:file>')
+def home(file):
+    return send_index()
 
 
-@app.route('/app.css')
-def app_css():
-    return app.send_static_file('src/generated/app.css')
+@app.route('/static/<path:file>')
+def static(file):
+    directory = path.join(path.dirname(__file__), '../public/src/generated')
+    return flask.send_from_directory(directory, file)

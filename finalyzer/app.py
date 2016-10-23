@@ -11,9 +11,7 @@ formatter = logging.Formatter(FORMAT)
 console.setFormatter(formatter)
 log.addHandler(console)
 
-app = Flask(
-    'finalyzer',
-    static_folder=path.join(path.dirname(__file__), '../public'))
+app = Flask('finalyzer', static_folder=None)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(
     path.join(path.dirname(__file__), '../finalyzer.db'))
