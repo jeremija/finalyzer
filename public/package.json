@@ -12,14 +12,18 @@
     "browserify": "^13.1.0",
     "eslint": "^3.8.1",
     "eslint-plugin-react": "^6.4.1",
+    "fetch": "^1.1.0",
     "immutable": "^3.8.1",
     "less": "^2.7.1",
     "react": "^15.3.2",
     "react-bootstrap": "^0.30.5",
     "react-dom": "^15.3.2",
+    "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-select": "^1.0.0-rc.2",
     "redux": "^3.6.0",
+    "redux-logger": "^2.7.0",
+    "redux-thunk": "^2.1.0",
     "watchify": "^3.7.0"
   },
   "devDependencies": {
