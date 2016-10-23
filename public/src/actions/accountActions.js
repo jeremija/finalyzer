@@ -5,19 +5,20 @@ const notify = (dispatch, actionType) => payload => {
   dispatch({ type: actionType, payload });
 };
 
-export const selectAccount = account => {
-  return {
+export const selectAccount = account => (dispatch, getState) => {
+  dispatch({
     type: constants.ACCOUNT_SELECT,
     payload: account
-  };
+  });
+  console.log('select accounts');
+  fetchTransactionsByTags()(dispatch, getState);
 };
 
 export const fetchAccounts = () => (dispatch, getState) => {
   notify(dispatch, constants.ACCOUNTS_REQUEST)();
   return http.get('/api/accounts')
   .then(notify(dispatch, constants.ACCOUNTS_RECEIVE))
-  .catch(notify(dispatch, constants.ACCOUNTS_INVALIDATE))
-  .then(() => fetchTransactionsByTags()(dispatch, getState));
+  .catch(notify(dispatch, constants.ACCOUNTS_INVALIDATE));
 };
 
 export const fetchTransactions = () => (dispatch, getState) => {
@@ -50,7 +51,7 @@ export const untagPayee = payee => (dispatch, getState) => {
   return http.delete('/api/payee/' + payee.id)
   .then(notify(dispatch, constants.UNTAG_PAYEE_RECEIVE))
   .catch(notify(dispatch, constants.UNTAG_PAYEE_INVALIDATE))
-  .then(() => fetchTransactionsByTags(dispatch, getState));
+  .then(() => fetchTransactionsByTags()(dispatch, getState));
 };
 
 export const fetchTransactionsByTags = () => (dispatch, getState) => {
