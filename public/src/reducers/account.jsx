@@ -1,9 +1,10 @@
+const Immutable = require('seamless-immutable');
 const constants = require('../constants.js');
 
 export const account = (state = null, action) => {
   switch (action.type) {
     case constants.ACCOUNT_SELECT:
-      return action.payload;
+      return Immutable(action.payload);
     default:
       return state;
   }
@@ -12,7 +13,7 @@ export const account = (state = null, action) => {
 const initialAccountsState = {
   isLoading: false,
   isInvalidated: true,
-  data: []
+  data: Immutable([])
 };
 
 export const accounts = (state = initialAccountsState, action) => {
@@ -22,17 +23,17 @@ export const accounts = (state = initialAccountsState, action) => {
         isLoading: true,
         ...state
       };
-    case constants.ACCOUNTS_RECEIVE:
+  case constants.ACCOUNTS_RECEIVE:
       return {
         isLoading: false,
         isInvalidated: false,
-        data: action.payload
+        data: Immutable(action.payload)
       };
     case constants.ACCOUNTS_INVALIDATE:
       return {
         isLoading: false,
         isInvalidated: true,
-        data: state.data
+        ...state
       };
     default:
       return state;

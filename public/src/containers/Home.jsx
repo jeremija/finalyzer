@@ -1,14 +1,16 @@
 const { connect } = require('react-redux');
-const React = require('react');
 const AccountPicker = require('../components/AccountPicker.jsx');
-const accountActions = require('../actions/accountActions.js');
 const Col = require('react-bootstrap').Col;
+const PureRenderMixin = require('react-addons-pure-render-mixin');
+const React = require('react');
+const accountActions = require('../actions/accountActions.js');
 
 const Home = React.createClass({
   propTypes: {
     account: React.PropTypes.object,
     accounts: React.PropTypes.object.isRequired
   },
+  mixins: [PureRenderMixin],
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(accountActions.fetchAccounts());
