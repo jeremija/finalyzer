@@ -1,5 +1,5 @@
 const { combineReducers } = require('redux');
-const account = require('./account.jsx');
+const account = require('./account.js');
 const routing = require('./routing.js');
 
 module.exports = combineReducers({

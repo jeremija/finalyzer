@@ -1,11 +1,11 @@
-const { connect } = require('react-redux');
 const AccountPicker = require('../components/AccountPicker.jsx');
 const Col = require('react-bootstrap').Col;
 const PureRenderMixin = require('react-addons-pure-render-mixin');
 const React = require('react');
 const accountActions = require('../actions/accountActions.js');
+const { connect } = require('react-redux');
 
-const Home = React.createClass({
+const Transactions = React.createClass({
   propTypes: {
     account: React.PropTypes.object,
     accounts: React.PropTypes.object.isRequired
@@ -51,4 +51,4 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = connect(mapStateToProps)(Home);
+module.exports = connect(mapStateToProps)(Transactions);

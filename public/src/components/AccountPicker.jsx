@@ -1,5 +1,6 @@
-const Select = require('react-select');
+const PureRenderMixin = require('react-addons-pure-render-mixin');
 const React = require('react');
+const Select = require('react-select');
 
 const AccountPicker = React.createClass({
   propTypes: {
@@ -8,6 +9,7 @@ const AccountPicker = React.createClass({
     isLoading: React.PropTypes.bool,
     onChange: React.PropTypes.func.isRequired
   },
+  mixins: [PureRenderMixin],
   render() {
     const { account, accounts, isLoading, onChange } = this.props;
     return (

@@ -3,6 +3,8 @@ const constants = require('../constants.js');
 
 export const account = (state = null, action) => {
   switch (action.type) {
+    case constants.ACCOUNTS_RECEIVE:
+      return Immutable(action.payload && action.payload[0]);
     case constants.ACCOUNT_SELECT:
       return Immutable(action.payload);
     default:
@@ -23,7 +25,7 @@ export const accounts = (state = initialAccountsState, action) => {
         isLoading: true,
         ...state
       };
-  case constants.ACCOUNTS_RECEIVE:
+    case constants.ACCOUNTS_RECEIVE:
       return {
         isLoading: false,
         isInvalidated: false,
