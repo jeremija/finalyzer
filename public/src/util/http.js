@@ -1,12 +1,14 @@
-const fetch = require('fetch');
+const fetch = require('node-fetch');
 
-export function get(url, params) {
+function get(url, params) {
+  url = window.location.origin + url;
   return fetch(url, params)
   .then(res => res.json());
 }
 
-export function post(url, body) {
-  return fetch('/users', {
+function post(url, body) {
+  url = window.location.origin + url;
+  return fetch(url, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -16,3 +18,13 @@ export function post(url, body) {
   })
   .then(res => res.json());
 }
+
+function _delete(url, body) {
+  url = window.location.origin + url;
+  return fetch(url, {
+    method: 'DELETE'
+  })
+  .then(res => res.json());
+}
+
+module.exports = { get, post, delete: _delete };
