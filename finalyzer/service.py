@@ -129,7 +129,7 @@ def fetch_amounts_per_tag(account_id, start_date, end_date):
 
 
 def import_ofx(ofx):
-    account_number = ofx.account.number[:-4]
+    account_number = ofx.account.number[-4:]
     acc = find_or_create_account(account_number)
 
     for t in ofx.account.statement.transactions:
