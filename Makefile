@@ -6,7 +6,7 @@ all: env requirements migrate test
 .PHONY: test
 test:
 
-	./env/bin/pytest finalyzer
+	./env/bin/python -m pytest finalyzer
 	cd public && npm test
 
 .PHONY: server
