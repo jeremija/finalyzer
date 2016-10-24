@@ -12,17 +12,17 @@ test:
 .PHONY: server
 server:
 
-	FLASK_APP=${FLASK_APP} ./env/bin/python3 -m flask run
+	FLASK_APP=${FLASK_APP} ./env/bin/python -m flask run
 
 .PHONY: migrate
 migrate:
 
-	FLASK_APP=${FLASK_APP} ./env/bin/python3 -m flask db upgrade
+	FLASK_APP=${FLASK_APP} ./env/bin/python -m flask db upgrade
 
 .PHONY: requirements
 requirements:
 
-	./env/bin/pip3 install -r requirements.txt
+	./env/bin/python -m pip install -r requirements.txt
 	cd public && npm install && npm run less && npm run compile
 
 .PHONY: env
