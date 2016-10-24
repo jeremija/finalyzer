@@ -1,4 +1,4 @@
-FLASK_APP := ./finalyzer/main.py
+export FLASK_APP := ./finalyzer/main.py
 
 .PHONY: all
 all: env requirements migrate test
@@ -12,12 +12,12 @@ test:
 .PHONY: server
 server:
 
-	FLASK_APP=${FLASK_APP} ./env/bin/python -m flask run
+	./env/bin/python -m flask run
 
 .PHONY: migrate
 migrate:
 
-	FLASK_APP=${FLASK_APP} ./env/bin/python -m flask db upgrade
+	./env/bin/python -m flask db upgrade
 
 .PHONY: requirements
 requirements:
