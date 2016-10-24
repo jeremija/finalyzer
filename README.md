@@ -1,10 +1,10 @@
-# Finalyzer
+# Finalyzer ![build-status][1]
 
 Your private and personal financial data analyzer.
 
 Work in progress.
 
-![screenshot][1]
+![screenshot][2]
 
 Should be able to parse bank statements in `.qfx` and display nice charts, as
 well as provide the ability to dynamically tag transactions.
@@ -31,7 +31,8 @@ Run the server:
 make server
 ```
 
-Open your browser at [localhost:5000][2]
+Open your browser at [localhost:5000][3]
 
-[1]: http://i.imgur.com/ebnjk9X.png
-[2]: http://localhost:5000
+[1]: https://api.travis-ci.org/jeremija/finalyzer.svg
+[2]: http://i.imgur.com/ebnjk9X.png
+[3]: http://localhost:5000
