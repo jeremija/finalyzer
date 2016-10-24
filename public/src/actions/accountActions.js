@@ -18,7 +18,8 @@ export const fetchAccounts = () => (dispatch, getState) => {
   notify(dispatch, constants.ACCOUNTS_REQUEST)();
   return http.get('/api/accounts')
   .then(notify(dispatch, constants.ACCOUNTS_RECEIVE))
-  .catch(notify(dispatch, constants.ACCOUNTS_INVALIDATE));
+  .catch(notify(dispatch, constants.ACCOUNTS_INVALIDATE))
+  .then(() => fetchTransactionsByTags()(dispatch, getState));
 };
 
 export const fetchTransactions = () => (dispatch, getState) => {

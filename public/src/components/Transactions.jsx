@@ -27,8 +27,6 @@ const Transactions = React.createClass({
       transactions
     } = this.props;
 
-    console.log('tu sam');
-
     const transactionsItems = transactions.map(transaction => {
       const payee = payeesById[transaction.payee_id];
       return (

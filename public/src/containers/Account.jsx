@@ -38,8 +38,7 @@ const Account = React.createClass({
     const { account, accounts, transactions } = this.props;
     return (
       <Col>
-        <h1>Welcome</h1>
-        <p className="lead">Choose your account</p>
+        <center className="lead">Choose your account</center>
         <AccountPicker
           account={account}
           accounts={accounts.data}

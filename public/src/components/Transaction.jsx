@@ -46,6 +46,7 @@ const Transaction = React.createClass({
     if (isEdit) {
       label = (
         <FormControl
+          autoFocus
           onBlur={this.handleSetTag}
           onChange={this.handleChange}
           placeholder="Enter tag"

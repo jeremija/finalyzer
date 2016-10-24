@@ -48,6 +48,7 @@ export const transactions = (state = defaultState, action) => {
         isInvalidated: true
       });
     case constants.ACCOUNT_SELECT:
+      return Immutable(defaultState);
     default:
       return Immutable(state);
   }
