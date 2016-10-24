@@ -22,7 +22,7 @@ make
 Import your own `*.QFX` file:
 
 ```bash
-./env/python3 -m finalyzer.import /path/to/your.qfx
+./env/bin/python -m finalyzer.import /path/to/your.qfx
 ```
 
 Run the server:
